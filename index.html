@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Terremotos del mundo con datos abiertos del USGS: tabla, mapa y gráfico.">
+  <title>Terremotos del mundo · USGS</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="cabecera">
+    <h1>Terremotos del mundo</h1>
+    <p class="subtitulo">Datos abiertos del Servicio Geológico de EE. UU. (USGS)</p>
+    <p class="intro">
+      Esta aplicación muestra los terremotos registrados en todo el mundo a partir
+      de los datos abiertos del USGS. Elige un intervalo de fechas y una magnitud
+      mínima, pulsa <strong>Obtener datos</strong> y la información se presentará de
+      tres formas: en una <strong>tabla</strong> con el detalle de cada terremoto,
+      en un <strong>mapa</strong> con la ubicación de cada epicentro y en un
+      <strong>gráfico</strong>. Los datos se piden en tiempo real con
+      <code>fetch</code> y se representan con Leaflet, OpenStreetMap y Google Charts.
+    </p>
+  </header>
+
+  <main>
+    <!-- ============ FORMULARIO ============ -->
+    <form id="formulario" class="tarjeta formulario">
+      <label>Desde
+        <input type="date" id="inicio" required>
+      </label>
+      <label>Hasta
+        <input type="date" id="fin" required>
+      </label>
+      <label>Magnitud mínima
+        <select id="magnitud">
+          <option value="2.5">2.5</option>
+          <option value="4" selected>4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </label>
+      <button type="submit">Obtener datos</button>
+
+      <div class="rangos" role="group" aria-label="Rangos rápidos">
+        <span class="rangos-titulo">Rango rápido:</span>
+        <button type="button" class="secundario" data-dias="1">Últimas 24 h</button>
+        <button type="button" class="secundario" data-dias="7">7 días</button>
+        <button type="button" class="secundario" data-dias="30">30 días</button>
+      </div>
+    </form>
+
+    <p id="aviso" role="status" aria-live="polite"></p>
+
+    <!-- ============ TABLA ============ -->
+    <section class="tarjeta seccion">
+      <h2>Tabla</h2>
+      <p class="ayuda">Pulsa en una cabecera para ordenar y en una fila para verla en el mapa.</p>
+      <div class="tabla-contenedor">
+        <table id="tabla">
+          <thead>
+            <tr>
+              <th data-campo="fecha" tabindex="0">Fecha</th>
+              <th>Lugar</th>
+              <th data-campo="mag" tabindex="0">Magnitud</th>
+              <th data-campo="prof" tabindex="0">Profundidad (km)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ MAPA ============ -->
+    <section class="tarjeta seccion">
+      <h2>Mapa</h2>
+      <div id="mapa"></div>
+      <ul class="leyenda">
+        <li><span class="punto" style="background:#2ecc71"></span> Menor de 4</li>
+        <li><span class="punto" style="background:#f39c12"></span> De 4 a 4.9</li>
+        <li><span class="punto" style="background:#e74c3c"></span> 5 o más</li>
+      </ul>
+    </section>
+
+    <!-- ============ GRÁFICO ============ -->
+    <section class="tarjeta seccion">
+      <h2>Gráfico</h2>
+      <div id="grafico"></div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <p>
+      Datos: <a href="https://earthquake.usgs.gov/fdsnws/event/1/" target="_blank" rel="noopener noreferrer">USGS Earthquake Catalog</a>
+      · Mapa: &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">colaboradores de OpenStreetMap</a>
+      · Librerías: Leaflet y Google Charts
+    </p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
